@@ -1,0 +1,8 @@
+
+> mock-portfolio@0.1.0 start
+> next start -p 3111
+
+▲ Next.js 16.2.6
+- Local:         http://localhost:3111
+- Network:       http://198.18.0.1:3111
+✓ Ready in 107ms

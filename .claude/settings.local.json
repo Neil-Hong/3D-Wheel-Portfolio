@@ -2,7 +2,15 @@
   "permissions": {
     "allow": [
       "Bash(Get-ChildItem *)",
-      "Bash(npx create-next-app@latest *)"
+      "Bash(npx create-next-app@latest *)",
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(timeout 3)",
+      "Bash(curl -s http://localhost:3000/)",
+      "WebFetch(domain:www.andreasantonsson.dev)",
+      "WebSearch",
+      "Bash(curl -s http://localhost:3000/project/noir-architecture)"
     ]
   }
 }
