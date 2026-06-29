@@ -5,7 +5,7 @@ import { Canvas, useThree } from "@react-three/fiber";
 import { Preload, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { projects } from "@/data/projects";
-import { Project } from "@/types";
+import type { Project } from "@/types";
 
 const PANEL_ARC = 0.55;
 const MOBILE_PANEL_ARC = 0.34;
@@ -103,6 +103,8 @@ function CurvedProjectPanel({
     [centerAngle, panelArc, visible, wheelRadius, width]
   );
 
+  useEffect(() => () => geometry?.dispose(), [geometry]);
+
   if (!geometry) {
     return null;
   }
@@ -123,18 +125,13 @@ function ProjectWheelScene({ progress }: ProjectWheel3DProps) {
   const size = useThree((state) => state.size);
   const isMobile = size.width < 768;
   const activeIndex = Math.round(progress);
-  const visibleProjects = projects.filter(
-    (_, index) => Math.abs(index - activeIndex) <= 2
-  );
   return (
     <group
       position={[0, 0, -0.42]}
       rotation={[0, 0, THREE.MathUtils.degToRad(7)]}
     >
-      {visibleProjects.map((project) => {
-        const index = projects.findIndex((item) => item.slug === project.slug);
-
-        return (
+      {projects.map((project, index) =>
+        Math.abs(index - activeIndex) <= 2 ? (
           <CurvedProjectPanel
             key={project.slug}
             project={project}
@@ -144,8 +141,8 @@ function ProjectWheelScene({ progress }: ProjectWheel3DProps) {
             viewportHeight={viewport.height}
             isMobile={isMobile}
           />
-        );
-      })}
+        ) : null,
+      )}
     </group>
   );
 }
@@ -154,8 +151,9 @@ export default function ProjectWheel3D({ progress }: ProjectWheel3DProps) {
   return (
     <Canvas
       dpr={[1, 1.35]}
+      frameloop="demand"
       camera={{ position: [0, 0, 7.6], fov: 42, near: 0.1, far: 80 }}
-      gl={{ antialias: true, alpha: true, preserveDrawingBuffer: true }}
+      gl={{ antialias: true, alpha: true }}
       className="project-wheel-canvas absolute inset-0"
     >
       <ProjectWheelScene progress={progress} />

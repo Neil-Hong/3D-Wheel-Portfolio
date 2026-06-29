@@ -1,12 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
-import { Project } from "@/types";
+import type { Project } from "@/types";
 import { projects } from "@/data/projects";
 
 interface ProjectDetailClientProps {
@@ -199,7 +200,7 @@ export default function ProjectDetailClient({
       <header className="project-detail-header fixed left-0 right-0 top-0 z-40 flex items-start justify-between text-[clamp(0.9rem,0.9vw,1.1rem)] font-medium leading-[1.34]">
         <Link href="/" aria-label="Back to index">
           <span className="block">Neil Hong</span>
-          <span className="block">Web3 &amp;Full Stack Developer</span>
+          <span className="block">Web3 &amp; Full Stack Developer</span>
         </Link>
         <nav className="flex items-center gap-8 opacity-65">
           <Link className="transition-opacity hover:opacity-100" href="/">
@@ -227,10 +228,17 @@ export default function ProjectDetailClient({
 
       <section className="project-detail-media">
         <figure className="project-detail-hero-media w-full overflow-hidden">
-          <div
-            className="project-detail-hero-image h-[100vh] min-h-[648px] w-full bg-cover bg-center"
-            style={{ backgroundImage: `url(${images[0] ?? project.image})` }}
-          />
+          <div className="project-detail-hero-image relative h-[100vh] min-h-[648px] w-full">
+            <Image
+              alt={`${project.title} project cover`}
+              className="object-cover"
+              fill
+              loading="eager"
+              quality={90}
+              sizes="100vw"
+              src={images[0] ?? project.image}
+            />
+          </div>
         </figure>
 
         <div
@@ -254,10 +262,20 @@ export default function ProjectDetailClient({
                 className="project-detail-gallery-item overflow-hidden"
                 data-alignment={alignment}
               >
-                <div
-                  className="aspect-[16/9] w-full bg-cover bg-center"
-                  style={{ backgroundImage: `url(${image})` }}
-                />
+                <div className="relative aspect-[16/9] w-full">
+                  <Image
+                    alt={`${project.title} project image ${index + 2}`}
+                    className="object-cover"
+                    fill
+                    quality={90}
+                    sizes={
+                      project.detailTheme.galleryLayout === "alternating"
+                        ? "(max-width: 768px) 100vw, 76vw"
+                        : "(max-width: 768px) 100vw, 84vw"
+                    }
+                    src={image}
+                  />
+                </div>
               </motion.figure>
             );
           })}

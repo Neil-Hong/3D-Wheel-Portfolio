@@ -1,4 +1,4 @@
-import { NavItem, Project, ProjectDetailTheme } from "@/types";
+import type { Project, ProjectDetailTheme } from "@/types";
 
 const defaultDetailTheme: ProjectDetailTheme = {
   background: "#FBF5F5",
@@ -32,8 +32,6 @@ export const projects: Project[] = [
       "/projects/ChargeMate-7.png",
     ],
     role: ["Hackathon project", "MVP Development"],
-    // awards: ["Awwwards SOTD", "FWA of the Day"],
-    color: "#0a0a0a",
     detailTheme: defaultDetailTheme,
   },
   {
@@ -55,8 +53,6 @@ export const projects: Project[] = [
       "/projects/LeekCup-8.png",
     ],
     role: ["Portfolio Design", "Creative Development"],
-    // awards: ["Awwwards Developer Award"],
-    color: "#0d0d0d",
     detailTheme: neutralAlternatingDetailTheme,
   },
   {
@@ -75,8 +71,6 @@ export const projects: Project[] = [
       "/projects/Ipomoea-5.png",
     ],
     role: ["Art Direction", "Frontend Development"],
-    // awards: ["FWA Site of the Year", "Awwwards SOTD"],
-    color: "#121212",
     detailTheme: neutralAlternatingDetailTheme,
   },
   {
@@ -95,8 +89,6 @@ export const projects: Project[] = [
       "/projects/ndis-5.png",
     ],
     role: ["Frontend Design", "Frontend Development", "Business Homepage"],
-    // awards: ["Swedish Design Prize"],
-    color: "#0f0f0f",
     detailTheme: {
       background: "#F9FBFF",
       foreground: "#0019FF",
@@ -121,8 +113,6 @@ export const projects: Project[] = [
       "/projects/web3-5.png",
     ],
     role: ["Creative Development", "Web3 Demos"],
-    // awards: ["Webby Winner", "Awwwards Honorable Mention"],
-    color: "#050505",
     detailTheme: {
       background: "#EBDACB",
       foreground: "#225A32",
@@ -144,8 +134,6 @@ export const projects: Project[] = [
       "/projects/portfolio-4.png",
     ],
     role: ["Portfolio Design", "Frontend Development"],
-    // awards: ["CSS Design Awards"],
-    color: "#1a1a1a",
     detailTheme: {
       background: "#FBF9FF",
       foreground: "#5F2FFE",
@@ -162,17 +150,10 @@ export const projects: Project[] = [
     image: "/p6.jpg",
     images: ["/p6.jpg", "/p3.jpg", "/p2.jpg", "/p5.jpg"],
     role: ["HyoJoo Han", "Suzy Bae"],
-    // awards: ["SiteInspire Selection"],
-    color: "#111111",
     detailTheme: {
       background: "#FBF9FF",
       foreground: "#5F2FFE",
       galleryLayout: "alternating",
     },
   },
-];
-
-export const navigation: NavItem[] = [
-  { label: "Index", href: "/" },
-  { label: "Next Project", href: "/#about" },
 ];

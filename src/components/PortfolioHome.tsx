@@ -29,9 +29,11 @@ function SectionTitle({ children }: { children: string }) {
 }
 
 function SplitLetters({ text }: { text: string }) {
+  const words = text.split(" ");
+
   return (
     <>
-      {text.split(" ").map((word, wordIndex) => (
+      {words.map((word, wordIndex) => (
         <span className="kinetic-word" key={`${word}-${wordIndex}`}>
           {word.split("").map((letter, letterIndex) => (
             <span
@@ -42,7 +44,7 @@ function SplitLetters({ text }: { text: string }) {
               {letter}
             </span>
           ))}
-          {wordIndex < text.split(" ").length - 1 ? "\u00a0" : null}
+          {wordIndex < words.length - 1 ? "\u00a0" : null}
         </span>
       ))}
       <span className="sr-only">{text}</span>
@@ -205,43 +207,6 @@ export default function PortfolioHome() {
           </div>
         </section>
 
-        <section id="experience" className="experience-section page-section">
-          <SectionTitle>Experience</SectionTitle>
-          <div className="experience-stack-layout">
-            <div className="experience-stack">
-              {experiences.map((experience, index) => (
-                <article
-                  className="experience-stack-card reveal-item"
-                  key={experience.company}
-                >
-                  <div className="experience-card-meta" aria-hidden="true">
-                    <span>{String(index + 1).padStart(2, "0")}</span>
-                    <span>{experience.company}</span>
-                  </div>
-                  <div className="experience-card-head">
-                    <div>
-                      <p className="experience-period">{experience.period}</p>
-                      <h3>{experience.role}</h3>
-                    </div>
-                    <div className="experience-company-block">
-                      <span>{experience.company}</span>
-                      <p>{experience.location}</p>
-                    </div>
-                  </div>
-                  <p className="experience-tech">
-                    Technologies: {experience.technologies}
-                  </p>
-                  <ul>
-                    {experience.highlights.slice(0, 3).map((highlight) => (
-                      <li key={highlight}>{highlight}</li>
-                    ))}
-                  </ul>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
         <section id="about" className="about-section page-section">
           <div className="about-intro">
             <p className="about-kicker reveal-item">Nice to meet you</p>
@@ -286,18 +251,6 @@ export default function PortfolioHome() {
             </div>
           </div>
         </section>
-
-        <section id="projects" className="projects-cta-section page-section">
-          <div className="projects-cta-inner">
-            <p className="reveal-item">Selected Projects</p>
-            <h2 className="kinetic-title">
-              <SplitLetters text="Explore the 3D project wheel" />
-            </h2>
-            <Link className="projects-cta-button reveal-item" href="/projects">
-              View My Projects
-            </Link>
-          </div>
-        </section>
         <section id="awards" className="awards-section page-section">
           <SectionTitle>Awards & Certificate</SectionTitle>
           <div className="awards-layout">
@@ -327,6 +280,54 @@ export default function PortfolioHome() {
                 playsInline
                 src="/video/turtle.mp4"
               />
+            </div>
+          </div>
+        </section>
+
+        <section id="projects" className="projects-cta-section page-section">
+          <div className="projects-cta-inner">
+            <p className="reveal-item">Selected Projects</p>
+            <h2 className="kinetic-title">
+              <SplitLetters text="Explore the 3D project wheel" />
+            </h2>
+            <Link className="projects-cta-button reveal-item" href="/projects">
+              View My Projects
+            </Link>
+          </div>
+        </section>
+        <section id="experience" className="experience-section page-section">
+          <SectionTitle>Experience</SectionTitle>
+          <div className="experience-stack-layout">
+            <div className="experience-stack">
+              {experiences.map((experience, index) => (
+                <article
+                  className="experience-stack-card reveal-item"
+                  key={experience.company}
+                >
+                  <div className="experience-card-meta" aria-hidden="true">
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <span>{experience.company}</span>
+                  </div>
+                  <div className="experience-card-head">
+                    <div>
+                      <p className="experience-period">{experience.period}</p>
+                      <h3>{experience.role}</h3>
+                    </div>
+                    <div className="experience-company-block">
+                      <span>{experience.company}</span>
+                      <p>{experience.location}</p>
+                    </div>
+                  </div>
+                  <p className="experience-tech">
+                    Technologies: {experience.technologies}
+                  </p>
+                  <ul>
+                    {experience.highlights.slice(0, 3).map((highlight) => (
+                      <li key={highlight}>{highlight}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
             </div>
           </div>
         </section>

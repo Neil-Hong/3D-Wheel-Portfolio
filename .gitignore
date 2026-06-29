@@ -29,6 +29,22 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+.next-dev-*.log
+.next-preview-*.log
+
+# local tool state
+.claude/*.local.json
+
+# local screenshots / previews
+preview-*.png
+
+# unused starter assets
+/public/file.svg
+/public/globe.svg
+/public/next.svg
+/public/vercel.svg
+/public/window.svg
+/public/p4.jpg
 
 # env files (can opt-in for committing if needed)
 .env*

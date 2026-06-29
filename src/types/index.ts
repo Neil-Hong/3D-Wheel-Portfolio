@@ -16,18 +16,5 @@ export interface Project {
   image: string;
   images: string[];
   role: string[];
-  awards?: string[];
-  color: string;
   detailTheme: ProjectDetailTheme;
-}
-
-export interface NavItem {
-  label: string;
-  href: string;
-}
-
-export interface ProjectIndicator {
-  slug: string;
-  title: string;
-  index: number;
 }
