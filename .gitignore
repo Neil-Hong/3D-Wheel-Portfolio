@@ -12,6 +12,11 @@
 
 # testing
 /coverage
+/tests
+
+# agents
+.agents/
+.claude/
 
 # next.js
 /.next/
