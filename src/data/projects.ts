@@ -14,6 +14,29 @@ const neutralAlternatingDetailTheme: ProjectDetailTheme = {
 
 export const projects: Project[] = [
   {
+    slug: "wedding-deco",
+    title: "Wedding Deco",
+    category: "A 3D Online wedding plan tool",
+    year: "2026 - ?",
+    client: "https://weddingdeco.vercel.app/",
+    description: "A 3D Online wedding plan tool",
+    image: "/p4.webp",
+    images: [
+      "/p6.webp",
+      "/p2.webp",
+      "/p8.webp",
+      "/p7.webp",
+      "/p4.webp",
+      "/p5.webp",
+    ],
+    role: ["3D Website", "Creative Development"],
+    detailTheme: {
+      background: "#FBF9FF",
+      foreground: "#5F2FFE",
+      galleryLayout: "alternating",
+    },
+  },
+  {
     slug: "chargemate",
     title: "ChargeMate",
     category: "2024 ETHGlobal Sydney Hackathon Project",
@@ -138,22 +161,6 @@ export const projects: Project[] = [
       background: "#FBF9FF",
       foreground: "#5F2FFE",
       galleryLayout: "centered",
-    },
-  },
-  {
-    slug: "my-love",
-    title: "My Love",
-    category: "My favourite female actress",
-    year: "♥?-?♥",
-    client: "https://www.instagram.com/skuukzky/",
-    description: "My favourite Korean female actress",
-    image: "/p6.jpg",
-    images: ["/p6.jpg", "/p3.jpg", "/p2.jpg", "/p5.jpg"],
-    role: ["HyoJoo Han", "Suzy Bae"],
-    detailTheme: {
-      background: "#FBF9FF",
-      foreground: "#5F2FFE",
-      galleryLayout: "alternating",
     },
   },
 ];
