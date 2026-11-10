@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Mail } from "lucide-react";
@@ -54,6 +54,30 @@ function SplitLetters({ text }: { text: string }) {
 
 export default function PortfolioHome() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const awardsVideoRef = useRef<HTMLVideoElement>(null);
+
+  // The awards video is a few MB and sits well below the fold: don't download
+  // it until it is close to the viewport, and pause it when off screen.
+  useEffect(() => {
+    const video = awardsVideoRef.current;
+    if (!video) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { rootMargin: "300px 0px" },
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -221,7 +245,7 @@ export default function PortfolioHome() {
                   alt="Portrait"
                   fill
                   sizes="(max-width: 768px) 100vw, 38vw"
-                  src="/me.png"
+                  src="/me.webp"
                 />
               </div>
               <div className="about-copy">
@@ -273,11 +297,13 @@ export default function PortfolioHome() {
             </div>
             <div className="awards-video-wrap reveal-item">
               <video
-                autoPlay
+                ref={awardsVideoRef}
+                aria-hidden="true"
                 className="awards-video"
                 loop
                 muted
                 playsInline
+                preload="none"
                 src="/video/turtle.mp4"
               />
             </div>

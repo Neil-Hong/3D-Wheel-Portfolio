@@ -15,13 +15,13 @@ export const awards = [
   },
   {
     title: "Encode Club AI Foundation",
-    image: "/awards/encodeAI.png",
+    image: "/awards/encodeAI.webp",
     quote:
       "This NFT represents my participation and achievement in an Encode Club programme.",
   },
   {
     title: "Encode Club Solidity Bootcamp",
-    image: "/awards/encodeSolidity.png",
+    image: "/awards/encodeSolidity.webp",
     quote:
       "This NFT represents my participation and achievement in an Encode Club Solidity Bootcamp. It is also the graduation certificate of the bootcamp.",
   },
