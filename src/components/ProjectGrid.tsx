@@ -6,6 +6,7 @@ import type { CSSProperties } from "react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { projects } from "@/data/projects";
+import { createProgressStore } from "@/lib/progress-store";
 
 const ProjectWheel3D = dynamic(() => import("./ProjectWheel3D"), {
   ssr: false,
@@ -43,12 +44,10 @@ function ProjectIntroTitle({ text }: { text: string }) {
 
 function AnimatedProjectTitle({
   category,
-  overlayStyle,
   slug,
   title,
 }: {
   category: string;
-  overlayStyle: CSSProperties;
   slug: string;
   title: string;
 }) {
@@ -101,7 +100,6 @@ function AnimatedProjectTitle({
     <div
       ref={rootRef}
       className="project-active-overlay pointer-events-none absolute inset-0 z-40 flex items-center justify-center"
-      style={overlayStyle}
     >
       <div className="project-active-heading pointer-events-none -mt-[1.2vh] text-center">
         <p className="project-title-category mb-[clamp(0.72rem,0.92vw,1.22rem)] text-[clamp(0.92rem,1.02vw,1.28rem)] font-extrabold leading-none text-white">
@@ -145,7 +143,11 @@ function AnimatedProjectTitle({
 
 export default function ProjectGrid() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const stageRef = useRef<HTMLElement>(null);
+  // Scroll progress changes every frame; keep it out of React state so only
+  // the active project index triggers a re-render.
+  const [progress] = useState(() => createProgressStore(0));
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -224,11 +226,31 @@ export default function ProjectGrid() {
       const localScroll = window.scrollY - sectionTop;
       const nextProgress =
         scrollable > 0 ? (localScroll / scrollable) * maxProgress : 0;
+      const clamped = clamp(nextProgress, 0, maxProgress);
 
-      setScrollProgress((current) => {
-        const clamped = clamp(nextProgress, 0, maxProgress);
-        return Math.abs(current - clamped) < 0.001 ? current : clamped;
-      });
+      if (Math.abs(progress.get() - clamped) < 0.001) {
+        return;
+      }
+
+      progress.set(clamped);
+
+      const scrollProgress = clamped;
+      const activeIndex = clamp(Math.round(scrollProgress), 0, maxProgress);
+      // The overlay title follows the active panel around the wheel.
+      const activeOffset = activeIndex - scrollProgress;
+      const stage = stageRef.current;
+      if (stage) {
+        stage.style.setProperty(
+          "--project-shift-desktop",
+          `${Math.sin(activeOffset * 0.65) * 138}vh`,
+        );
+        stage.style.setProperty(
+          "--project-shift-mobile",
+          `${Math.sin(activeOffset * 0.4) * 122}vh`,
+        );
+      }
+
+      setActiveIndex(activeIndex);
     }
 
     function onScroll() {
@@ -245,18 +267,12 @@ export default function ProjectGrid() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  }, [progress]);
 
-  const activeIndex = clamp(
-    Math.round(scrollProgress),
-    0,
-    projects.length - 1
-  );
   const activeProject = projects[activeIndex];
-  const activeOffset = activeIndex - scrollProgress;
-  const overlayStyle = {
-    "--project-shift-desktop": `${Math.sin(activeOffset * 0.65) * 138}vh`,
-    "--project-shift-mobile": `${Math.sin(activeOffset * 0.4) * 122}vh`,
+  const initialStageStyle = {
+    "--project-shift-desktop": "0vh",
+    "--project-shift-mobile": "0vh",
   } as CSSProperties;
 
   function scrollToProject(index: number) {
@@ -312,8 +328,11 @@ export default function ProjectGrid() {
         </nav>
       </div>
 
-      <section className="projects-wheel-stage relative sticky top-0 h-[100dvh] overflow-hidden">
-        <ProjectWheel3D progress={scrollProgress} />
+      <section className="projects-wheel-stage relative sticky top-0 h-[100dvh] overflow-hidden"
+        ref={stageRef}
+        style={initialStageStyle}
+      >
+        <ProjectWheel3D progress={progress} activeIndex={activeIndex} />
 
         <div
           aria-hidden="true"
@@ -337,7 +356,6 @@ export default function ProjectGrid() {
         <AnimatedProjectTitle
           key={activeProject.slug}
           category={activeProject.category}
-          overlayStyle={overlayStyle}
           slug={activeProject.slug}
           title={activeProject.title}
         />
