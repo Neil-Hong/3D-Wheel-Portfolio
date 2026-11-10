@@ -30,7 +30,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    // The inline script adds a `js` class before first paint so CSS can keep
+    // GSAP-animated elements hidden until their entrance runs (no flash of
+    // content that then disappears). suppressHydrationWarning covers that
+    // class, which React did not render.
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
+      </head>
       <body className="bg-black text-white antialiased">{children}</body>
     </html>
   );

@@ -1267,8 +1267,32 @@ html.lenis body {
   outline-offset: 4px;
 }
 
-.gsap-hidden {
-  visibility: hidden;
+/*
+ * Above-the-fold elements that GSAP animates in. The server renders them
+ * visible (for no-JS and crawlers); once the inline head script adds `.js`,
+ * keep them hidden until GSAP sets its own inline visibility. The delayed
+ * animation is a safety net if the JS bundle never runs.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .js .navbar,
+  .js .hero-line,
+  .js .hero-copy,
+  .js .hero-cta,
+  .js .projects-index-kicker,
+  .js .projects-index-title-letter,
+  .js .project-title-category,
+  .js .project-title-letter,
+  .js .project-open-button,
+  .js .project-detail-rise {
+    visibility: hidden;
+    animation: js-reveal-fallback 0s linear 4s forwards;
+  }
+}
+
+@keyframes js-reveal-fallback {
+  to {
+    visibility: visible;
+  }
 }
 
 h1,
@@ -1428,6 +1452,7 @@ h3 {
     top: 8.7rem;
   }
 
+  .projects-wheel-section h1,
   .projects-wheel-section h2 {
     max-width: 7ch;
   }

@@ -14,6 +14,7 @@ import {
   experiences,
   navItems,
 } from "@/data/home";
+import { prefersReducedMotion } from "@/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -54,13 +55,21 @@ function SplitLetters({ text }: { text: string }) {
 
 export default function PortfolioHome() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
   const awardsVideoRef = useRef<HTMLVideoElement>(null);
 
   // The awards video is a few MB and sits well below the fold: don't download
   // it until it is close to the viewport, and pause it when off screen.
+  // With reduced motion, neither video plays; they show a still frame.
   useEffect(() => {
     const video = awardsVideoRef.current;
     if (!video) {
+      return;
+    }
+
+    if (prefersReducedMotion()) {
+      heroVideoRef.current?.pause();
+      video.preload = "metadata";
       return;
     }
 
@@ -174,7 +183,7 @@ export default function PortfolioHome() {
   return (
     <div ref={rootRef} className="portfolio-home">
       <header className="navbar">
-        <a className="navbar-brand" href="#home" aria-label="Go to home">
+        <a className="navbar-brand" href="#home">
           <span>Neil Hong</span>
           <span>Web3 & Full-stack Developer</span>
         </a>
@@ -196,6 +205,7 @@ export default function PortfolioHome() {
       <main>
         <section id="home" className="hero-section" aria-label="Hero">
           <video
+            ref={heroVideoRef}
             aria-hidden="true"
             autoPlay
             className="hero-video"
@@ -207,7 +217,10 @@ export default function PortfolioHome() {
           <div className="hero-overlay" aria-hidden="true" />
           <div className="hero-stage">
             <div className="hero-top">
-              <h1 className="hero-title" aria-label="I am Web3 Creative Dev">
+              <h1
+                className="hero-title"
+                aria-label="I am Neil, creative developer"
+              >
                 <span className="hero-line">I AM</span>
                 <span className="hero-line">Neil</span>
               </h1>

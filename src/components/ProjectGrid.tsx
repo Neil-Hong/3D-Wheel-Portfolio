@@ -1,12 +1,15 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { projects } from "@/data/projects";
+import { prefersReducedMotion } from "@/lib/motion";
 import { createProgressStore } from "@/lib/progress-store";
+import WebGLBoundary from "./WebGLBoundary";
 
 const ProjectWheel3D = dynamic(() => import("./ProjectWheel3D"), {
   ssr: false,
@@ -55,7 +58,7 @@ function AnimatedProjectTitle({
 
   useLayoutEffect(() => {
     const root = rootRef.current;
-    if (!root) {
+    if (!root || prefersReducedMotion()) {
       return;
     }
 
@@ -112,13 +115,13 @@ function AnimatedProjectTitle({
           {words.map((word, wordIndex) => (
             <span className="project-title-word" key={`${word}-${wordIndex}`}>
               {word.split("").map((letter, letterIndex) => (
-                <div
+                <span
                   aria-hidden="true"
                   className="project-title-letter"
                   key={`${letter}-${letterIndex}`}
                 >
                   {letter}
-                </div>
+                </span>
               ))}
             </span>
           ))}
@@ -290,7 +293,7 @@ export default function ProjectGrid() {
   }
 
   return (
-    <section
+    <main
       ref={sectionRef}
       id="projects"
       className="projects-wheel-section relative bg-black text-white"
@@ -307,9 +310,9 @@ export default function ProjectGrid() {
           <p className="projects-index-kicker">
             Selected Projects
           </p>
-          <h2 className="projects-index-title font-dahlia">
+          <h1 className="projects-index-title font-dahlia">
             <ProjectIntroTitle text="Interactive work" />
-          </h2>
+          </h1>
         </div>
 
         {/* Plain list of every project so crawlers and keyboard / screen reader
@@ -329,13 +332,32 @@ export default function ProjectGrid() {
       </div>
 
       <section className="projects-wheel-stage relative sticky top-0 h-[100dvh] overflow-hidden"
+        aria-label="Project wheel"
         ref={stageRef}
         style={initialStageStyle}
       >
-        <ProjectWheel3D progress={progress} activeIndex={activeIndex} />
+        <WebGLBoundary
+          fallback={
+            // Flat cover image when WebGL is unavailable or the scene crashes.
+            <div className="project-wheel-canvas absolute inset-0">
+              <Image
+                key={activeProject.slug}
+                alt=""
+                className="object-cover opacity-70"
+                fill
+                loading="eager"
+                sizes="100vw"
+                src={activeProject.image}
+              />
+            </div>
+          }
+        >
+          <ProjectWheel3D progress={progress} activeIndex={activeIndex} />
+        </WebGLBoundary>
 
         <div
-          aria-hidden="true"
+          role="group"
+          aria-label="Choose a project"
           className="absolute bottom-[6.25vh] right-[3.25vw] z-50 flex flex-col items-center gap-[0.34rem]"
         >
           {projects.map((project, index) => (
@@ -343,6 +365,7 @@ export default function ProjectGrid() {
               key={project.slug}
               type="button"
               aria-label={`Go to ${project.title}`}
+              aria-current={index === activeIndex ? "true" : undefined}
               onClick={() => scrollToProject(index)}
               className={`block h-[1rem] w-[1rem] rounded-[0.12rem] border transition-all duration-300 ${
                 index === activeIndex
@@ -360,6 +383,6 @@ export default function ProjectGrid() {
           title={activeProject.title}
         />
       </section>
-    </section>
+    </main>
   );
 }
