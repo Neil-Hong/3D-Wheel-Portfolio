@@ -235,7 +235,7 @@ export default function ProjectDetailClient({
       <header className="project-detail-header fixed left-0 right-0 top-0 z-40 flex items-start justify-between text-[clamp(0.9rem,0.9vw,1.1rem)] font-medium leading-[1.34]">
         <Link href="/">
           <span className="block">Neil Hong</span>
-          <span className="block">Web3 &amp; Full Stack Developer</span>
+          <span className="block">Web3 &amp; Full-stack Developer</span>
         </Link>
         <nav
           aria-label="Project navigation"
@@ -258,7 +258,7 @@ export default function ProjectDetailClient({
         eyebrow={project.category}
         meta={[
           { label: "Category", value: project.role.slice(0, 2).join(", ") },
-          { label: "Completed", value: project.year },
+          { label: "Year", value: project.year },
           {
             label: "URL",
             value: `${project.client}`,

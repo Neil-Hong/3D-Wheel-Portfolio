@@ -289,7 +289,7 @@ export default function PortfolioHome() {
           </div>
         </section>
         <section id="awards" className="awards-section page-section">
-          <SectionTitle>Awards & Certificate</SectionTitle>
+          <SectionTitle>Awards & Certificates</SectionTitle>
           <div className="awards-layout">
             <div className="awards-grid">
               {awards.map((award) => (
@@ -361,7 +361,7 @@ export default function PortfolioHome() {
                     Technologies: {experience.technologies}
                   </p>
                   <ul>
-                    {experience.highlights.slice(0, 3).map((highlight) => (
+                    {experience.highlights.map((highlight) => (
                       <li key={highlight}>{highlight}</li>
                     ))}
                   </ul>

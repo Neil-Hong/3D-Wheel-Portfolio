@@ -8,14 +8,6 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: "SF Pro Display";
-  src: url("/fonts/SF-Pro-Display-Regular.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
   --portfolio-accent: #00d1c7;
   --page-pad: clamp(1.25rem, 4vw, 4.8rem);
@@ -277,7 +269,7 @@ body {
   color: #fff;
   cursor: default;
   font-family:
-    "SF Pro Display", Arial, Helvetica, ui-sans-serif, system-ui, sans-serif;
+    var(--font-inter), "Inter", Arial, Helvetica, ui-sans-serif, system-ui, sans-serif;
   font-size: 16px;
   line-height: 1.45;
 }
@@ -774,7 +766,7 @@ html {
 .experience-stack-card h3 {
   color: #fff;
   font-family:
-    "SF Pro Display", Arial, Helvetica, ui-sans-serif, system-ui, sans-serif;
+    var(--font-inter), "Inter", Arial, Helvetica, ui-sans-serif, system-ui, sans-serif;
   font-size: clamp(2rem, 3.7vw, 5.1rem);
   font-weight: 400;
   letter-spacing: -0.02em;
@@ -1236,27 +1228,6 @@ html {
   border-radius: 999px;
 }
 
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
-}
-
 ::selection {
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
@@ -1357,6 +1328,11 @@ h3 {
 
   .navbar nav a {
     font-size: 0.84rem;
+  }
+
+  /* The brand link already goes home; keep the mobile nav on one row. */
+  .navbar nav a[href="#home"] {
+    display: none;
   }
 
   .navbar-brand {

@@ -1,9 +1,11 @@
+// Ordered to match the sections on the home page.
 export const navItems = [
   { label: "Home", href: "#home" },
+  { label: "About Me", href: "#about" },
   { label: "Awards", href: "#awards" },
   { label: "Projects", href: "/projects" },
   { label: "Experience", href: "#experience" },
-  { label: "About Me", href: "#about" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export const awards = [

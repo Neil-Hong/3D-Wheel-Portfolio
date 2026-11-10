@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Neil Hong — Portfolio
 
-## Getting Started
+Personal portfolio for a Web3 and full-stack developer: a kinetic home page,
+a scroll-driven 3D project wheel, and themed project detail pages.
 
-First, run the development server:
+## Stack
+
+- [Next.js 16](https://nextjs.org) (App Router, static export of every route)
+- React 19, TypeScript
+- Tailwind CSS 4 plus hand-written styles in `src/app/globals.css`
+- GSAP for page and title animations, Framer Motion on detail pages
+- React Three Fiber / three.js for the project wheel
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Script | What it does |
+| --- | --- |
+| `npm run dev` | Start the dev server |
+| `npm run build` | Production build (all pages are prerendered) |
+| `npm run start` | Serve the production build |
+| `npm run lint` | ESLint |
+| `npm run optimize:images -- [--delete] <file\|dir>...` | Convert PNG/JPEG to resized WebP (see below) |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Configuration
 
-## Learn More
+| Variable | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | Public origin, e.g. `https://example.com`. Used for canonical URLs, Open Graph tags, `robots.txt` and `sitemap.xml`. On Vercel it falls back to the production deployment URL. |
 
-To learn more about Next.js, take a look at the following resources:
+## Editing content
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Projects:** `src/data/projects.ts` — title, description, links, cover
+  `image`, gallery `images`, and a `detailTheme` (background, foreground,
+  gallery layout) per project. The `slug` becomes `/project/<slug>`.
+- **Home page:** `src/data/home.ts` — nav items, awards, experience, about rows.
+- **Images:** put them in `public/projects/` and convert them first:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+  ```bash
+  npm run optimize:images -- --delete public/projects/my-new-shot.png
+  ```
 
-## Deploy on Vercel
+  This writes a WebP next to the original (max 2560px wide, quality 82) and,
+  with `--delete`, removes the source. Reference the `.webp` path in the data.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+  app/
+    layout.tsx               Root layout, metadata, fonts
+    page.tsx                 Home
+    projects/page.tsx        3D project wheel
+    project/[slug]/          Project detail pages (statically generated)
+    sitemap.ts, robots.ts
+  components/
+    PortfolioHome.tsx        Home sections and GSAP animations
+    ProjectGrid.tsx          Wheel page: scroll handling, titles, controls
+    ProjectWheel3D.tsx       WebGL wheel (client-only)
+    WebGLBoundary.tsx        Static fallback when WebGL is unavailable
+  data/                      Site content
+  lib/                       Small helpers (site URL, motion, progress store)
+scripts/optimize-images.mjs  Image conversion
+```
+
+## Accessibility notes
+
+- Animations respect `prefers-reduced-motion`.
+- `/projects` includes a keyboard-reachable list of every project, and falls
+  back to a flat cover image when WebGL is unavailable.
