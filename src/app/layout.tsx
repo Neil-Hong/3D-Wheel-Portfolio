@@ -1,15 +1,26 @@
 import type { Metadata } from "next";
+import { siteDescription, siteName, siteUrl } from "@/lib/site";
 import "./globals.css";
 
+const defaultTitle = `${siteName} - Web3 & Full-stack Developer`;
+
 export const metadata: Metadata = {
-  title: "Neil Hong  - Web3 & Full-stack Developer",
-  description:
-    "A portfolio for Web3, full-stack development, creative coding, 3D interfaces and interactive digital work.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: defaultTitle,
+    template: `%s | ${siteName}`,
+  },
+  description: siteDescription,
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "Neil Hong - Web3 & Full-stack Developer",
-    description:
-      "A portfolio for Web3, full-stack development, creative coding, 3D interfaces and interactive digital work.",
+    title: defaultTitle,
+    description: siteDescription,
+    siteName,
     type: "website",
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
   },
 };
 

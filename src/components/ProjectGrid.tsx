@@ -297,6 +297,21 @@ export default function ProjectGrid() {
         </div>
       </div>
 
+      {/* Plain list of every project so crawlers and keyboard / screen reader
+          users can reach each page without the WebGL wheel. Visible on focus. */}
+      <nav
+        aria-label="All projects"
+        className="sr-only focus-within:not-sr-only focus-within:fixed focus-within:left-4 focus-within:top-16 focus-within:z-[60] focus-within:rounded focus-within:bg-black focus-within:p-4"
+      >
+        <ul className="flex flex-col gap-2">
+          {projects.map((project) => (
+            <li key={project.slug}>
+              <Link href={`/project/${project.slug}`}>{project.title}</Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
       <section className="projects-wheel-stage relative sticky top-0 h-[100dvh] overflow-hidden">
         <ProjectWheel3D progress={scrollProgress} />
 
