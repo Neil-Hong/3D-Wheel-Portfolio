@@ -125,7 +125,10 @@ function ProjectTitleSection({
     <section
       ref={rootRef}
       id={id}
-      className="relative flex min-h-[70svh] flex-col items-center justify-center px-[3.1vw] py-[16vh]"
+      // `!` is needed: the global `* { margin: 0; padding: 0 }` reset is
+      // unlayered, so it overrides plain Tailwind spacing utilities.
+      // pt: always clear the fixed header (~6-7rem), more on tall screens.
+      className="relative flex min-h-[70svh] flex-col items-center justify-center px-[3.1vw] py-[16vh] !pt-[max(8rem,16vh)]"
     >
       <p className="project-detail-rise mb-[clamp(3.5rem,5.3vw,6.8rem)] text-center text-[clamp(0.98rem,1vw,1.22rem)] font-medium">
         {eyebrow}
@@ -138,7 +141,8 @@ function ProjectTitleSection({
       </Heading>
 
       {description ? (
-        <p className="project-detail-rise mt-[clamp(2.5rem,4vw,5rem)] max-w-[42rem] text-center text-[clamp(1rem,1.1vw,1.3rem)] leading-[1.5]">
+        // Gap scales with the title size so it clears descenders like "g".
+        <p className="project-detail-rise !mt-[max(3rem,calc(clamp(5.1rem,11vw,14.6rem)*0.4))] max-w-[42rem] !px-[1.15rem] text-center text-[clamp(1rem,1.1vw,1.3rem)] leading-[1.5]">
           {description}
         </p>
       ) : null}
